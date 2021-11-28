@@ -1,0 +1,2 @@
+# aim-trening
+rgudibgfijgidgtjfdlvidif
