@@ -4,24 +4,60 @@ const timeList = document.querySelector('#time-list');
 const timeEl = document.querySelector('#time');
 const board = document.querySelector('#board');
 
-const colors = ['#6fa2dd', '#996fdd', '#dd6fdd', '#d8565d', '#56d8d1', '#b5d856', '#d8aa56', '#16661d'];
+const colors = ['#ff0000', '#ffa200', '#ffff00', '#84ff00', '#00ffe1', '#2b00ff', '#bb00ff', '#ff00d0'];
 
 let time = 0;
 let score = 0;
 
+
+
+startBtn.addEventListener('click', (event) =>   {
+    event.preventDefault();
+    screens[0].classList.add('up');
+})
+
+
+
+timeList.addEventListener('click', (event) =>   {
+    if(event.target.classList.contains('time-btn')) {
+        time = parseInt(event.target.getAttribute('date-time'));
+        screens[1].classList.add('up');
+
+        startGame();
+    }
+})
+
+
+
+board.addEventListener('click', (event) =>   {
+    if(event.target.classList.contains('circle')) {
+        score++;
+        event.target.remove();
+        createRandomCircle();
+    }
+})
+
+
+
 function getRandomNumber(min,max) {
     return Math.round(Math.random() * (max - min) + min);
 }
+
+
 
 function getRandomColor() {
     const index = Math.floor(Math.random() * colors.lendth);
     return colors[index];
 }
 
-function setColors(element) {
+
+
+function setColor(element) {
     const color = getRandomColor();
     element.style.background = color;
 }
+
+
 
 function createRandomCircle() {
     const circle = document.createElement('div');
@@ -41,4 +77,40 @@ function createRandomCircle() {
     
     board.appened(circle); 
 }
+
+
+
+function decreaseTime() {
+    if (time === 0) {
+        finishGame()
+    } else {
+        let current = --time;
+        if (current < 10) {
+            current = `0${current}`;
+        }
+        setTime(current);
+    }
+}
+
+
+
+function setTime(value) {
+    timeEl.innerHTML = `00:${value}`;
+}
+
+
+
+function finishGame() {
+    board.innerHTML = `<h1>Ваш счёт: ${score}</h1>`;
+}
+
+
+
+function startGame() {
+    setInterval(decreaseTime, 1000);
+    createRandomCircle();
+    setTime(time);
+}
+
+
 
